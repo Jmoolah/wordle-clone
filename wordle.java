@@ -13,7 +13,7 @@ public class wordle {
     public static final String RESET = "\u001B[0m";
     public static final String GREEN = "\u001B[32m";
     public static final String YELLOW = "\u001B[33m";
-
+    
     public static HashSet<Character> greychars = new HashSet<>();
     public static HashSet<Character> yellowChars = new HashSet<>();
     public static HashSet<Character> greenChars = new HashSet<>();
@@ -73,7 +73,7 @@ public class wordle {
         }
 
     }
-
+    //sits in while loop
     public static void takeGuess() {
         
         boolean isGuessValid = false;
