@@ -16,26 +16,36 @@ public class wordle {
     
     public static HashSet<Character> greychars = new HashSet<>();
     public static HashSet<Character> yellowChars = new HashSet<>();
-    public static HashSet<Character> greenChars = new HashSet<>();
+    public static HashSet<String> greenChars = new HashSet<>();
+    public static HashSet<Character> unsedChars = new HashSet<>();
+    public static ArrayList<String> letterColors = new ArrayList<>();
+    
     public static HashMap<Character, Integer> correctLetterLocations = new HashMap<>();
     public static HashSet<Character> correctWordCharcters = new HashSet<>();
     public static StringBuilder correctWord = new StringBuilder();
     public static ArrayList<String> wordList = new ArrayList<>();
     public static Scanner sc = new Scanner(System.in);
     public static boolean isGuesswrong = true;
-    
+     public static byte guessCount=0;
+   
     public static void main(String[] args) throws IOException {
         for (char c = 'A'; c <= 'Z'; c++) {
-        System.out.print(c + " ");
+        //System.out.print(c + " ");
+        unsedChars.add(c);
+        letterColors.add(Character.toString(c));
+        
         }
 
+       //System.out.print(String.join(" ", letterColors));
         makeWordist(FILENAME);
-        getCorrectWord();
-        System.out.println(correctWord);
+        getACorrectWord();
+       // System.out.println(correctWord);
         
        
-        while (isGuesswrong) {
+        while (isGuesswrong && guessCount!=5) {
            takeGuess();
+           guessCount++;
+           System.out.println(greenChars);
         }
         System.out.println(RESET);
     }
@@ -49,7 +59,8 @@ public class wordle {
         }
     }
 
-    public static void getCorrectWord() throws IOException {
+
+    public static void getACorrectWord() throws IOException {
         int size = wordList.size();
         int randomWord = (int) (Math.random() * size); // 0 to 100
         if (correctWord.isEmpty()) {
@@ -74,8 +85,19 @@ public class wordle {
 
     }
     //sits in while loop
+
+
+    //        \u001B[<n>B
+    /* 
+    System.out.print("\u001B[H"); // ANSI code: move cursor to top-left corner
+
+
+    System.out.print("\u001B[2J"); // ANSI code: clear entire screen
+    System.out.print("\u001B[H"); // move cursor back to top-left
+
+    */
     public static void takeGuess() {
-        
+        System.out.println();
         boolean isGuessValid = false;
         String guessWhile ="";
         while(!isGuessValid){
@@ -83,7 +105,7 @@ public class wordle {
             guessWhile += sc.next().toLowerCase();
             
             if(wordList.contains(guessWhile)){
-                isGuessValid=true;
+                break;
             }
             else{
                 System.out.print("\033[F");   // move cursor UP one line
@@ -109,15 +131,24 @@ public class wordle {
 
         for (int c = 0; c < 5; c++) {
             if(guessCharArr[c]==correctWordCharArr[c]){
+                greenChars.add(String.valueOf(guessCharArr[c]));
                 System.out.print(GREEN + guessCharArr[c]+RESET);
+                
             }
             else if(correctWordCharcters.contains(guessCharArr[c])){
                System.out.print(YELLOW +guessCharArr[c]+RESET); 
+               yellowChars.add((char) c);
             }
             else{
                 System.out.print(guessCharArr[c]);
+                greychars.add((char) c);
             }
         }
-        System.out.print("\n");
+       
+
+    }
+
+    public void updateColors(int updateRange){
+        
     }
 }
